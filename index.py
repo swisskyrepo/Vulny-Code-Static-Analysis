@@ -2,13 +2,11 @@
 # -*- coding: utf-8 -*-
 
 # Author     : Swissky
-# How to use : python analysis_source.py "../Www/Hacking/"
+# How to use : python index.py --dir test
 # Educational purpose only !
 
-# TODO
-# 1. https://www.ripstech.com/blog/2017/why-mail-is-dangerous-in-php/
-# 2. Parcourir les fichiers en recursif avec les includes et afficher toutes les modifications de la variable - detecter les constantes
-# BUG du echo()
+# TODO Parcourir les fichiers en recursif avec les includes et afficher toutes les modifications de la variable - detecter les constantes
+# BUG variable multiple
 
 import sys
 import argparse

@@ -1,10 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-payloads = [
-  # /!\ Detection Format (.*)function($vuln)(.*)
+# /!\ Detection Format (.*)function($vuln)(.*) matched by payload[0]+regex_indicators
+regex_indicators = '\((.*?)(\$_GET\[.*\]|\$_FILES\[.*\]|\$_POST\[.*\]|\$_REQUEST\[.*\]|\$_COOKIES\[.*\]|\$_SESSION\[.*\]|\$(?!this|e-)[a-zA-Z0-9_]*)(.*)\)'
 
-  # Function_Name:String, Vulnerability_Name:String, Protection_Function:Array
+# Function_Name:String, Vulnerability_Name:String, Protection_Function:Array
+payloads = [
   ["eval","Remote Command Execution",["escapeshellarg","escapeshellcmd"]],
   ["popen","Remote Command Execution",["escapeshellarg","escapeshellcmd"]],
   ["system","Remote Command Execution",["escapeshellarg","escapeshellcmd"]],
