@@ -7,17 +7,26 @@ from indicators import *
 
 # Display the found vulnerability with basic informations like the line
 def display(path,payload,vulnerability,line,declaration_text,declaration_line):
-	print  "-"*60+"\r\n\033[1m"+"Potential vulnerability found : \033[0m\033[92m" + payload[1]+"\033[0m"
-	print  "\033[1mLine \033[0m\033[92m"+line+"\033[0m in "+path
+	print  "-"*80
 
-	if not "POST" in vulnerability[1] and not "GET" in vulnerability[1]:
-		print  "\033[1mCode : \033[0m"+payload[0]+'('+vulnerability[0]+"\033[93m"+vulnerability[1]+"\033[0m"+vulnerability[2]+')'
+	# Potential vulnerability found :  SQL Injection
+	print ("\033[1mPotential vulnerability found : \033[92m%s\033[0m")%(payload[1])
+
+	# Line  25  in test/sqli.php
+	print  ("\033[1mLine \033[0m\033[92m%s\033[0m in %s")%(line,path)
+
+	# Code : include($_GET['patisserie'])
+	vuln = vulnerability[0]+"\033[93m"+vulnerability[1]+"\033[0m"+vulnerability[2]
+	print ("\033[1mCode : \033[0m%s(%s)") % (payload[0], vuln)
+
+	# Declared at line 1 : $dest = $_GET['who'];
+	if not "$_" in vulnerability[1]:
 		if declaration_text != "":
 			print "\033[1mDeclared at line \033[0;92m"+declaration_line+"\033[0m : "+ declaration_text
 		else:
 			print "\033[1mUndeclared \033[0m"+ declaration_text+" in the file"
-	else:
-		print  "\033[1mCode : \033[0m"+payload[0]+'('+vulnerability[0]+"\033[93m"+vulnerability[1]+"\033[0m"+vulnerability[2]+')'
+
+
 
 
 # Find the line where the vulnerability is located
@@ -30,6 +39,7 @@ def find_line_vuln(path,payload,vulnerability,content):
 
 
 # Find the line where the entry point is declared
+# TODO: should be an array of the declaration and modifications
 def find_line_declaration(declaration, content):
 	content = content.split('\n')
 	for i in range(len(content)):
