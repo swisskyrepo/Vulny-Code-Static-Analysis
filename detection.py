@@ -34,9 +34,9 @@ def check_exception(match):
 # Analyse the source code of a single page
 def analysis(path):
   with open(path, 'r') as content_file:
-    content = content_file.read()
 
     # Clean source for a better detection
+    content = content_file.read()
     content = clean_source_and_format(content)
 
     # Detection of RCE/SQLI/LFI/RFI/RFU/XSS
@@ -51,9 +51,11 @@ def analysis(path):
       		line_declaration = ""
 
       		if check_exception(vuln[1]) == False:
-
+                # TODO check_declaration(content, vuln[1])
+                # Parse include and content = include_content + content
       			regex_declaration = re.compile("\$"+vuln[1][1:]+"([\t ]*)=(?!=)(.*)")
-      			declaration = regex_declaration.findall(content)
+      			declaration       = regex_declaration.findall(content)
+
       			if len(declaration)>0:
       				declaration_text = "$"+vuln[1][1:] +declaration[0][0]+"="+declaration[0][1]
       				line_declaration = find_line_declaration(declaration_text, content)

@@ -5,8 +5,11 @@
 # How to use : python index.py --dir test
 # Educational purpose only !
 
-# TODO Parcourir les fichiers en recursif avec les includes et afficher toutes les modifications de la variable - detecter les constantes
+# TODO remonter les includes (parse include/require xxx , chercher son contenu et l'ajouter au debut du content actuel)
+# TODO afficher toutes les modifications de la variable -
+# TODO enlever les faux positifs : constantes
 # BUG variable multiple
+# BUG color var['something']
 
 import sys
 import argparse
