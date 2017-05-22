@@ -1,4 +1,8 @@
-<?php error_reporting(0); ?>
+<?php error_reporting(0);
+/*$mail = $_POST['mail'];
+include($_POST['mail']);
+include($mail);*/
+?>
 <html>
 	<head>
 		<meta charset="UTF-8" />
@@ -14,14 +18,14 @@
 				<a href='?patisserie=patisserie3.php'><img src='./img/paris_brest.jpg' id='carre' alt='patisserie'></a>
 				<a href='?patisserie=patisserie4.php'><img src='./img/saint_honore.jpg' id='carre' alt='patisserie'></a>
 				<?php
-					if(isset($_GET['patisserie'])){						
+					if(isset($_GET['patisserie'])){
 						echo "<div id='texte'>";
 						if(strstr($_GET['patisserie'], 'patisserie') || strstr($_GET['patisserie'], 'index') || strstr($_GET['patisserie'], 'flag') ){
 							include($_GET['patisserie']);
 						}
 						else{
 							echo "<h2>Hacker Spotted !</h2>";
-						}						
+						}
 						echo "</div>";
 					}
 					else{
@@ -45,7 +49,7 @@
 		</article>
 	</body>
 	<footer>
-		<a href='#'>Copyright® Swissky</a> - 
+		<a href='#'>Copyright® Swissky</a> -
 		<a href='../../index.php'>Challenges</a>
 	</footer>
 </html>

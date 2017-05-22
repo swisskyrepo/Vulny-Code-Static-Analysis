@@ -8,8 +8,9 @@
 # TODO remonter les includes (parse include/require xxx , chercher son contenu et l'ajouter au debut du content actuel)
 # TODO afficher toutes les modifications de la variable -
 # TODO enlever les faux positifs : constantes
-# BUG variable multiple
+# BUG variable multiple (check en recursif dans vuln)
 # BUG color var['something']
+# BUG detection include
 
 import sys
 import argparse
@@ -22,7 +23,18 @@ if __name__ == "__main__":
     results = parser.parse_args()
 
     if results.dir != None:
-        print "-"*60+"\r\n\033[1mAnalyzing '"+results.dir+"' source code\033[0m"
+        print " ██▒   █▓ █    ██  ██▓     ███▄    █▓██   ██▓"
+        print "▓██░   █▒ ██  ▓██▒▓██▒     ██ ▀█   █ ▒██  ██▒"
+        print " ▓██  █▒░▓██  ▒██░▒██░    ▓██  ▀█ ██▒ ▒██ ██░"
+        print "  ▒██ █░░▓▓█  ░██░▒██░    ▓██▒  ▐▌██▒ ░ ▐██▓░"
+        print "   ▒▀█░  ▒▒█████▓ ░██████▒▒██░   ▓██░ ░ ██▒▓░"
+        print "   ░ ▐░  ░▒▓▒ ▒ ▒ ░ ▒░▓  ░░ ▒░   ▒ ▒   ██▒▒▒ "
+        print "   ░ ░░  ░░▒░ ░ ░ ░ ░ ▒  ░░ ░░   ░ ▒░▓██ ░▒░ "
+        print "     ░░   ░░░ ░ ░   ░ ░      ░   ░ ░ ▒ ▒ ░░  "
+        print "      ░     ░         ░  ░         ░ ░ ░     "
+        print "     ░                               ░ ░     "
+        print "     ░          Copyright @pentest_swissky   "
+        print "\n\033[1mAnalyzing '"+results.dir+"' source code\033[0m"
 
         if os.path.isfile(results.dir):
             analysis(results.dir)

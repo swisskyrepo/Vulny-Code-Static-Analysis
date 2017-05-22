@@ -5,31 +5,6 @@ import re
 from indicators import *
 from functions import *
 
-# Format the source code in order to improve the detection
-def clean_source_and_format(content):
-    # Clean up - replace tab by space
-    content = content.replace("	"," ")
-
-    # Quickfix to detect both echo("something") and echo "something"
-    content = content.replace("echo ","echo(")
-    content = content.replace(";",");")
-    return content
-
-# Check the line to detect an eventual protection
-def check_protection(payload, match):
-    for protection in payload:
-        if protection in "".join(match):
-            return True
-    return False
-
-# Check exception - When it's a function($SOMETHING) Match declaration $SOMETHING = ...
-def check_exception(match):
-    exceptions = ["_GET","_REQUEST","_POST","_COOKIES","_FILES"]
-    is_exception = False
-    for exception in exceptions:
-        if exception in match:
-            return True
-    return False
 
 # Analyse the source code of a single page
 def analysis(path):
@@ -45,20 +20,14 @@ def analysis(path):
       matches = regex.findall(content)
       for vuln in matches:
 
-      	# Vulnerability detected
+      	# Security hole detected, is it protected ?
       	if check_protection(payload[2], vuln) == False:
-      		declaration_text = ""
-      		line_declaration = ""
+            declaration_text, line_declaration = "",""
 
-      		if check_exception(vuln[1]) == False:
-                # TODO check_declaration(content, vuln[1])
-                # Parse include and content = include_content + content
-      			regex_declaration = re.compile("\$"+vuln[1][1:]+"([\t ]*)=(?!=)(.*)")
-      			declaration       = regex_declaration.findall(content)
-
-      			if len(declaration)>0:
-      				declaration_text = "$"+vuln[1][1:] +declaration[0][0]+"="+declaration[0][1]
-      				line_declaration = find_line_declaration(declaration_text, content)
+            # No declaration for $_GET, $_POST ...
+            if check_exception(vuln[1]) == False:
+                # Look for the declaration of $something = xxxxx
+                declaration_text, line_declaration = check_declaration(content, vuln[1])
 
       		# Display all the informations
       		line_vuln = find_line_vuln(path, payload, vuln, content)
