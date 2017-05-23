@@ -5,12 +5,13 @@
 # How to use : python index.py --dir test
 # Educational purpose only !
 
-# TODO remonter les includes (parse include/require xxx , chercher son contenu et l'ajouter au debut du content actuel)
 # TODO afficher toutes les modifications de la variable -
 # TODO enlever les faux positifs : constantes
 # BUG variable multiple (check en recursif dans vuln)
 # BUG color var['something']
 # BUG detection include
+# BUG SQLi 2 ligne 17 not found
+# TODO print help if no dir in arg
 
 import sys
 import argparse
@@ -23,20 +24,20 @@ if __name__ == "__main__":
     results = parser.parse_args()
 
     if results.dir != None:
-        print " ██▒   █▓ █    ██  ██▓     ███▄    █▓██   ██▓"
-        print "▓██░   █▒ ██  ▓██▒▓██▒     ██ ▀█   █ ▒██  ██▒"
-        print " ▓██  █▒░▓██  ▒██░▒██░    ▓██  ▀█ ██▒ ▒██ ██░"
-        print "  ▒██ █░░▓▓█  ░██░▒██░    ▓██▒  ▐▌██▒ ░ ▐██▓░"
-        print "   ▒▀█░  ▒▒█████▓ ░██████▒▒██░   ▓██░ ░ ██▒▓░"
-        print "   ░ ▐░  ░▒▓▒ ▒ ▒ ░ ▒░▓  ░░ ▒░   ▒ ▒   ██▒▒▒ "
-        print "   ░ ░░  ░░▒░ ░ ░ ░ ░ ▒  ░░ ░░   ░ ▒░▓██ ░▒░ "
-        print "     ░░   ░░░ ░ ░   ░ ░      ░   ░ ░ ▒ ▒ ░░  "
-        print "      ░     ░         ░  ░         ░ ░ ░     "
-        print "     ░                               ░ ░     "
-        print "     ░          Copyright @pentest_swissky   "
+        print "      (`-')                    <-. (`-')_                                _(`-')    (`-')  _"
+        print "     _(OO )     .->      <-.      \( OO) )     .->   _             .->  ( (OO ).-> ( OO).-/"
+        print ",--.(_/,-.\,--.(,--.   ,--. )  ,--./ ,--/  ,--.'  ,-.\-,-----.(`-')----. \    .'_ (,------."
+        print "\   \ / (_/|  | |(`-') |  (`-')|   \ |  | (`-')'.'  / |  .--./( OO).-.  ''`'-..__) |  .---'"
+        print " \   /   / |  | |(OO ) |  |OO )|  . '|  |)(OO \    / /_) (`-')( _) | |  ||  |  ' |(|  '--."
+        print "_ \     /_)|  | | |  \(|  '__ ||  |\    |  |  /   /) ||  |OO ) \|  |)|  ||  |  / : |  .--'"
+        print "\-'\   /   \  '-'(_ .' |     |'|  | \   |  `-/   /` (_'  '--'\  '  '-'  '|  '-'  / |  `---."
+        print "    `-'     `-----'    `-----' `--'  `--'    `--'      `-----'   `-----' `------'  `------'"
+        print "                                                            Copyright @pentest_swissky     "
         print "\n\033[1mAnalyzing '"+results.dir+"' source code\033[0m"
 
         if os.path.isfile(results.dir):
             analysis(results.dir)
         else:
             recursive(results.dir,0)
+
+    # else print help

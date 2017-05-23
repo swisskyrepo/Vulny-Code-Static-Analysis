@@ -81,14 +81,29 @@ def check_exception(match):
     return False
 
 # Check declaration
-# TODO: should follow any include and add its content
-# TODO: should handle constant variable
-def check_declaration(content, vuln):
-    # Parse include and content = include_content + content
+def check_declaration(content, vuln, path):
+    # Follow and parse include, then add it's content
+    regex_declaration = re.compile("(include.*?|require.*?)\([\"\'](.*?)[\"\']\)")
+    includes          = regex_declaration.findall(content)
+	# Path is the path of the current scanned file, we can use it to compute the relative include
+    for include in includes:
+		relative_include = os.path.dirname(path)+"/"
+		path_include     = relative_include + include[1]
+		with open(path_include, 'r') as f:
+			content = f.read() + content
+
+	# Extract declaration
     regex_declaration = re.compile("\$"+vuln[1:]+"([\t ]*)=(?!=)(.*)")
     declaration       = regex_declaration.findall(content)
     if len(declaration)>0:
-        declaration_text = "$"+vuln[1:] +declaration[0][0]+"="+declaration[0][1]
-        line_declaration = find_line_declaration(declaration_text, content)
-        return (declaration_text,line_declaration)
-    return ("","")
+
+		# TODO: Check constant then return True if constant because it's false positive
+		declaration_text = "$"+vuln[1:] +declaration[0][0]+"="+declaration[0][1]
+		line_declaration = find_line_declaration(declaration_text, content)
+		#regex_constant = re.compile("\$"+vuln[1:]+"([\t ]*)=[\t ]*([\"\'][a-zA-Z0-9]*?[\"\']);")
+		#false_positive = regex_constant.match(declaration_text)
+		#if false_positive:
+		#	return (True, "","")
+		return (False, declaration_text,line_declaration)
+
+    return (False, "","")

@@ -9,6 +9,7 @@ from functions import *
 # Analyse the source code of a single page
 def analysis(path):
   with open(path, 'r') as content_file:
+    false_positive = False
 
     # Clean source for a better detection
     content = content_file.read()
@@ -26,12 +27,14 @@ def analysis(path):
 
             # No declaration for $_GET, $_POST ...
             if check_exception(vuln[1]) == False:
+
                 # Look for the declaration of $something = xxxxx
-                declaration_text, line_declaration = check_declaration(content, vuln[1])
+                false_positive, declaration_text, line_declaration = check_declaration(content, vuln[1], path)
 
       		# Display all the informations
       		line_vuln = find_line_vuln(path, payload, vuln, content)
-      		display(path, payload, vuln, line_vuln, declaration_text, line_declaration)
+      		if not false_positive:
+      		    display(path, payload, vuln, line_vuln, declaration_text, line_declaration)
 
 
 # Run thru every files and subdirectories

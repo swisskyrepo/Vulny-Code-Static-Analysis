@@ -11,7 +11,7 @@
 		<article>
 			<?php
 				//Connexion à la BDD
-				include('../../inc/configuration.php');
+				include('configuration.php');
 				mysql_connect($DB_HOST,$DB_USER,$DB_PASS);
 				mysql_select_db($DB_NAME);
 				mysql_query("SET NAMES 'utf8'");
