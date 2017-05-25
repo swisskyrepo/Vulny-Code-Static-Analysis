@@ -16,7 +16,6 @@
 				mysql_select_db($DB_NAME);
 				mysql_query("SET NAMES 'utf8'");
 
-
 				if(isset($_GET['id'])){
 					//Affichage du smartphone
 					$news = mysql_query("SELECT id,name,image,specifications FROM ".$DB_CHALL_TWO." WHERE id=".$_GET['id']) or die(mysql_error());

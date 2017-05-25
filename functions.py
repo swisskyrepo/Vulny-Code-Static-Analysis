@@ -17,14 +17,6 @@ def display(path,payload,vulnerability,line,declaration_text,declaration_line):
 	vuln = vulnerability[0]+"\033[93m"+vulnerability[1]+"\033[0m"+vulnerability[2]
 	vuln = "{}({})".format(payload[0], vuln)
 
-	# Declared at line 1 : $dest = $_GET['who'];
-	declared = ""
-	if not "$_" in vulnerability[1]:
-		if declaration_text != "":
-			declared = "Line n°\033[0;92m"+declaration_line+"\033[0m : "+ declaration_text
-		else:
-			declared = "Undeclared \033[0m"+ declaration_text+" in the file"
-
 	# Final Display
 	rows, columns = os.popen('stty size', 'r').read().split()
 	print "-" * (int(columns)-1)
@@ -32,8 +24,18 @@ def display(path,payload,vulnerability,line,declaration_text,declaration_line):
 	print "-" * (int(columns)-1)
 	print "\033[1mLine \033[0m        " + "\t"+line
 	print "\033[1mCode \033[0m        " + "\t"+vuln
-	print "\033[1mDeclaration \033[0m " + "\t"+declared+"\n"
 
+	# Declared at line 1 : $dest = $_GET['who'];
+	declared = ""
+	if not "$_" in vulnerability[1]:
+		if declaration_text != "":
+			declared = "Line n°\033[0;92m"+declaration_line+"\033[0m : "+ declaration_text
+		else:
+			declared = "Undeclared \033[0m"+ declaration_text+" in the file"
+		print "\033[1mDeclaration \033[0m " + "\t"+declared
+
+	# Small delimiter
+	print ""
 
 # Find the line where the vulnerability is located
 def find_line_vuln(path,payload,vulnerability,content):
@@ -100,10 +102,10 @@ def check_declaration(content, vuln, path):
 		# TODO: Check constant then return True if constant because it's false positive
 		declaration_text = "$"+vuln[1:] +declaration[0][0]+"="+declaration[0][1]
 		line_declaration = find_line_declaration(declaration_text, content)
-		#regex_constant = re.compile("\$"+vuln[1:]+"([\t ]*)=[\t ]*([\"\'][a-zA-Z0-9]*?[\"\']);")
-		#false_positive = regex_constant.match(declaration_text)
-		#if false_positive:
-		#	return (True, "","")
+		regex_constant = re.compile("\$"+vuln[1:]+"([\t ]*)=[\t ]*([\"\'][a-zA-Z0-9]*?[\"\']);")
+		false_positive = regex_constant.match(declaration_text)
+		if false_positive:
+			return (True, "","")
 		return (False, declaration_text,line_declaration)
 
     return (False, "","")

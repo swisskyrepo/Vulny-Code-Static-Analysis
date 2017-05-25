@@ -6,7 +6,6 @@
 # Educational purpose only !
 
 # TODO afficher toutes les modifications de la variable -
-# TODO enlever les faux positifs : constantes
 # BUG variable multiple (check en recursif dans vuln)
 # BUG color var['something']
 # BUG detection include
