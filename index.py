@@ -8,9 +8,6 @@
 # TODO afficher toutes les modifications de la variable -
 # BUG variable multiple (check en recursif dans vuln)
 # BUG color var['something']
-# BUG detection include
-# BUG SQLi 2 ligne 17 not found
-# TODO print help if no dir in arg
 
 import sys
 import argparse
@@ -38,5 +35,5 @@ if __name__ == "__main__":
             analysis(results.dir)
         else:
             recursive(results.dir,0)
-
-    # else print help
+    else:
+        parser.print_help()

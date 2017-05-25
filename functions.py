@@ -42,7 +42,7 @@ def find_line_vuln(path,payload,vulnerability,content):
 	content = content.split('\n')
 	for i in range(len(content)):
 		if payload[0]+'('+vulnerability[0]+vulnerability[1]+vulnerability[2]+')' in content[i]:
-			return str(i)
+			return str(i-1)
 	return "-1"
 
 
