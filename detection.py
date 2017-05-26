@@ -21,10 +21,18 @@ def analysis(path):
       matches = regex.findall(content)
 
       for vuln in matches:
-      	# Security hole detected, is it protected ?
+
+        # Security hole detected, is it protected ?
       	if check_protection(payload[2], vuln) == False:
             declaration_text, line_declaration = "",""
             # No declaration for $_GET, $_POST ...
+
+            # BUG
+            # mysql_query\((.*?)(\$_GET\[.*\]|\$(?!this|e-)[a-zA-Z0-9_]*)(.*)\)
+            # (match - remove from line ) -> match while len(match !0 )
+            #print vuln[2]
+            #
+
             if check_exception(vuln[1]) == False:
                 # Look for the declaration of $something = xxxxx
                 false_positive, declaration_text, line_declaration = check_declaration(content, vuln[1], path)
