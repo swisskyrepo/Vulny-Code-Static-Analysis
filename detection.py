@@ -37,6 +37,9 @@ def analysis(path):
                     # Look for the declaration of $something = xxxxx
                     false_positive, declaration_text, line_declaration = check_declaration(content, vulnerable_var[1], path)
 
+                # Set false positive if protection is in the variable's declaration
+                false_positive = false_positive or check_protection(payload[2], declaration_text)==True
+
                 # Display all the vuln
                 line_vuln = find_line_vuln(path, payload, vuln_content, content)
                 if not false_positive:
