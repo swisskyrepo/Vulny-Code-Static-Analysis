@@ -6,7 +6,6 @@
 # Educational purpose only !
 
 # TODO afficher toutes les modifications de la variable -
-# BUG & TODO  variable multiple (check en recursif dans vuln)
 # BUG color var['something']
 
 import sys
