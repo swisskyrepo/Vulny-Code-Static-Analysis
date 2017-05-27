@@ -9,7 +9,6 @@ from functions import *
 # Analyse the source code of a single page
 def analysis(path):
   with open(path, 'r') as content_file:
-    false_positive = False
 
     # Clean source for a better detection
     content = content_file.read()
@@ -20,27 +19,28 @@ def analysis(path):
       regex   = re.compile(payload[0]+regex_indicators)
       matches = regex.findall(content)
 
-      for vuln in matches:
-
+      for vuln_content in matches:
         # Security hole detected, is it protected ?
-      	if check_protection(payload[2], vuln) == False:
+      	if check_protection(payload[2], vuln_content) == False:
             declaration_text, line_declaration = "",""
-            # No declaration for $_GET, $_POST ...
 
-            # BUG
-            # mysql_query\((.*?)(\$_GET\[.*\]|\$(?!this|e-)[a-zA-Z0-9_]*)(.*)\)
-            # (match - remove from line ) -> match while len(match !0 )
-            #print vuln[2]
-            #
+            # Managing multiple variable in a single line/function
+            sentence = "".join(vuln_content)
+            regax = re.compile(regex_indicators[2:-2])
+            for vulnerable_var in regax.findall(sentence):
+                false_positive = False
 
-            if check_exception(vuln[1]) == False:
-                # Look for the declaration of $something = xxxxx
-                false_positive, declaration_text, line_declaration = check_declaration(content, vuln[1], path)
+                # BUG nt des var et mettre en couleur la bonne plutôt que la première
+                # BUG ex fct(occurence) et mettre en couleur la xieme occurence
+                # No declaration for $_GET, $_POST ...
+                if check_exception(vulnerable_var[1]) == False:
+                    # Look for the declaration of $something = xxxxx
+                    false_positive, declaration_text, line_declaration = check_declaration(content, vulnerable_var[1], path)
 
-            # Display all the vuln
-            line_vuln = find_line_vuln(path, payload, vuln, content)
-            if not false_positive:
-                display(path, payload, vuln, line_vuln, declaration_text, line_declaration)
+                # Display all the vuln
+                line_vuln = find_line_vuln(path, payload, vuln_content, content)
+                if not false_positive:
+                    display(path, payload, vuln_content, line_vuln, declaration_text, line_declaration, vulnerable_var[1])
 
 
 # Run thru every files and subdirectories

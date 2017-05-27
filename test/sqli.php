@@ -18,6 +18,7 @@
 
 				if(isset($_GET['id'])){
 					//Affichage du smartphone
+					$news_dbg = mysql_query("SELECT id,name,image,specifications FROM ".$_GET['id']." WHERE id=".$DB_CHALL_TWO) or die(mysql_error());
 					$news = mysql_query("SELECT id,name,image,specifications FROM ".$DB_CHALL_TWO." WHERE id=".$_GET['id']) or die(mysql_error());
 					while($phone = mysql_fetch_array($news)){
 						echo "<div id='noidea'>";
