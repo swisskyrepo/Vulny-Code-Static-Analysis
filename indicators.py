@@ -37,7 +37,7 @@ payloads = [
   ["move_uploaded_file","File Upload",[]],
 
   ["echo","Cross Site Scripting",["htmlentities","htmlspecialchars"]],
-  # Print etc
+  ["print","Cross Site Scripting",["htmlentities","htmlspecialchars"]],
 
   ["mail", "Insecure E-mail",[]],
 
