@@ -6,7 +6,9 @@
 # Educational purpose only !
 
 # TODO afficher toutes les modifications de la variable -
+# TODO checker recursivement les vulns dans la déclaration d'une var
 # BUG color var['something']
+# TODO serialize detection
 
 import sys
 import argparse
