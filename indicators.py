@@ -19,8 +19,9 @@ payloads = [
   ["require_once","File Inclusion",[]],
   ["readfile","File Inclusion",[]],
   ["file_get_contents","File Inclusion",[]],
-  ["show_source","File Inclusion",[]],
-  ["highlight_file","File Inclusion",[]],
+
+  ["show_source","File Inclusion / Path Traversal",[]],
+  ["highlight_file","File Inclusion / Path Traversal",[]],
 
   ["mysql_query","SQL Injection",["mysql_real_escape_string"]],
   ["mysql_unbuffered_query","SQL Injection",["mysql_real_escape_string"]],
@@ -29,7 +30,9 @@ payloads = [
   ["mysqli_real_query","SQL Injection",["mysql_real_escape_string"]],
   ["mysqli::query","SQL Injection",["mysql_real_escape_string"]],
   ["mysqli_query","SQL Injection",["mysql_real_escape_string"]],
-  # pdo querys
+  ["->query","SQL Injection",["->prepare"]],
+  ["->exec","SQL Injection",["->prepare"]],
+  ["->execute","SQL Injection",["->prepare"]],
 
   ["move_uploaded_file","File Upload",[]],
 
