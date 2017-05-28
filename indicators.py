@@ -19,6 +19,8 @@ payloads = [
   ["require_once","File Inclusion",[]],
   ["readfile","File Inclusion",[]],
   ["file_get_contents","File Inclusion",[]],
+  ["show_source","File Inclusion",[]],
+  ["highlight_file","File Inclusion",[]],
 
   ["mysql_query","SQL Injection",["mysql_real_escape_string"]],
   ["mysql_unbuffered_query","SQL Injection",["mysql_real_escape_string"]],
@@ -32,7 +34,9 @@ payloads = [
   ["move_uploaded_file","File Upload",[]],
 
   ["echo","Cross Site Scripting",["htmlentities","htmlspecialchars"]],
-
   # Print etc
-  ["mail", "Insecure E-mail",[]]
+
+  ["mail", "Insecure E-mail",[]],
+
+  ["unserialize", "PHP Object Injection",[]]
 ]

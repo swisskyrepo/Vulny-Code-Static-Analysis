@@ -102,7 +102,7 @@ def check_declaration(content, vuln, path):
 		# Check constant then return True if constant because it's false positive
 		declaration_text = "$"+vuln[1:] +declaration[0][0]+"="+declaration[0][1]
 		line_declaration = find_line_declaration(declaration_text, content)
-		regex_constant = re.compile("\$"+vuln[1:]+"([\t ]*)=[\t ]*([\"\'(]*?[a-zA-Z0-9{}_]*?[\"\')]*?);")
+		regex_constant = re.compile("\$"+vuln[1:]+"([\t ]*)=[\t ]*?([\"\'(]*?[a-zA-Z0-9{}_\(\)@\.: ]*?[\"\')]*?);")
 		false_positive = regex_constant.match(declaration_text)
 
 		if false_positive:
