@@ -8,6 +8,15 @@
 # TODO afficher toutes les modifications de la variable -
 # TODO checker recursivement les vulns dans la déclaration d'une var
 # BUG color var['something']
+# BUG XPATH injection var declaration $employees
+# BUG PGSQL : pg_pconnect / pg_connect detected 
+# TODO count of vuln (passer une var à analysis, recursive et l'incrementer
+"""
+invcount = 0
+def inv_sort (listIn):
+    global invcount
+    invcount += 1
+"""
 
 import sys
 import argparse
