@@ -37,7 +37,7 @@ payloads = [
   ["mysqli_real_query","SQL Injection",["mysql_real_escape_string"]],
   ["mysqli::query","SQL Injection",["mysql_real_escape_string"]],
   ["mysqli_query","SQL Injection",["mysql_real_escape_string"]],
-  ["pg_query","SQL Injection",["pg_escape_string","pg_pconnect"]],
+  ["pg_query","SQL Injection",["pg_escape_string","pg_pconnect","pg_connect"]],
   ["->query","SQL Injection",["->prepare"]],
   ["->exec","SQL Injection",["->prepare"]],
   ["->execute","SQL Injection",["->prepare"]],

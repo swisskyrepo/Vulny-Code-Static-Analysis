@@ -24,6 +24,7 @@ def analysis(path):
       matches = regex.findall(content)
 
       for vuln_content in matches:
+        occurence = 0
 
         # Security hole detected, is it protected ?
       	if check_protection(payload[2], vuln_content) == False:
@@ -34,13 +35,14 @@ def analysis(path):
             regax = re.compile(regex_indicators[2:-2])
             for vulnerable_var in regax.findall(sentence):
                 false_positive = False
+                occurence += 1
 
                 # No declaration for $_GET, $_POST ...
                 if check_exception(vulnerable_var[1]) == False:
 
                     # Look for the declaration of $something = xxxxx
                     false_positive, declaration_text, line_declaration = check_declaration(content, vulnerable_var[1], path)
-                    
+
                     # Set false positive if protection is in the variable's declaration
                     false_positive = false_positive or check_protection(payload[2], declaration_text)==True
 
@@ -49,7 +51,7 @@ def analysis(path):
                 if not false_positive:
                     global result_count
                     result_count = result_count + 1
-                    display(path, payload, vuln_content, line_vuln, declaration_text, line_declaration, vulnerable_var[1])
+                    display(path, payload, vuln_content, line_vuln, declaration_text, line_declaration, vulnerable_var[1], occurence)
 
 
 # Run thru every files and subdirectories

@@ -4,8 +4,35 @@ import os
 import re
 from indicators import *
 
+# Replace the nth occurence of a string
+# From https://stackoverflow.com/questions/35091557/replace-nth-occurrence-of-substring-in-string
+def nth_replace(string, old, new, n=1, option='only nth'):
+    """
+    This function replaces occurrences of string 'old' with string 'new'.
+    There are three types of replacement of string 'old':
+    1) 'only nth' replaces only nth occurrence (default).
+    2) 'all left' replaces nth occurrence and all occurrences to the left.
+    3) 'all right' replaces nth occurrence and all occurrences to the right.
+    """
+    if option == 'only nth':
+        left_join = old
+        right_join = old
+    elif option == 'all left':
+        left_join = new
+        right_join = old
+    elif option == 'all right':
+        left_join = old
+        right_join = new
+    else:
+        print("Invalid option. Please choose from: 'only nth' (default), 'all left' or 'all right'")
+        return None
+    groups = string.split(old)
+    nth_split = [left_join.join(groups[:n]), right_join.join(groups[n:])]
+    return new.join(nth_split)
+
+
 # Display the found vulnerability with basic informations like the line
-def display(path,payload,vulnerability,line,declaration_text,declaration_line, colored):
+def display(path,payload,vulnerability,line,declaration_text,declaration_line, colored, occurence):
 
 	# Potential vulnerability found :  SQL Injection
 	header = "\033[1mPotential vulnerability found : \033[92m{}\033[0m".format(payload[1])
@@ -14,7 +41,7 @@ def display(path,payload,vulnerability,line,declaration_text,declaration_line, c
 	line = "n°\033[92m{}\033[0m in {}".format(line,path)
 
 	# Code : include($_GET['patisserie'])
-	vuln = ("".join(vulnerability)).replace(colored, "\033[93m"+colored+"\033[0m")
+	vuln = nth_replace("".join(vulnerability), colored, "\033[93m"+colored+"\033[0m", occurence)
 	vuln = "{}({})".format(payload[0], vuln)
 
 	# Final Display
