@@ -5,9 +5,13 @@ import re
 from indicators import *
 from functions import *
 
+result_count = 0
+result_files = 0
 
 # Analyse the source code of a single page
 def analysis(path):
+  global result_files
+  result_files += 1
   with open(path, 'r') as content_file:
 
     # Clean source for a better detection
@@ -43,23 +47,32 @@ def analysis(path):
                 # Display all the vuln
                 line_vuln = find_line_vuln(path, payload, vuln_content, content)
                 if not false_positive:
+                    global result_count
+                    result_count = result_count + 1
                     display(path, payload, vuln_content, line_vuln, declaration_text, line_declaration, vulnerable_var[1])
 
 
 # Run thru every files and subdirectories
 def recursive(dir,progress):
-  progress += 1
-  try:
-  	for name in os.listdir(dir):
-  		print('\tAnalyzing : '+'⬛'*progress+'\r'),
+    progress += 1
+    try:
+      for name in os.listdir(dir):
+        print('\tAnalyzing : '+'⬛'*progress+'\r'),
 
-  		# Targetting only PHP Files
-  		if os.path.isfile(os.path.join(dir, name)):
-  			if ".php" in os.path.join(dir, name):
-  				analysis(dir+"/"+name)
-  		else :
-  			recursive(dir+"/"+name, progress)
+        # Targetting only PHP Files
+        if os.path.isfile(os.path.join(dir, name)):
+            if ".php" in os.path.join(dir, name):
+                analysis(dir+"/"+name)
+        else :
+            recursive(dir+"/"+name, progress)
 
-  except OSError, e:
-  	print "Error 404 - Not Found, maybe you need more right ?"+" "*30
-  	exit(-1)
+    except OSError, e:
+        print "Error 404 - Not Found, maybe you need more right ?"+" "*30
+        exit(-1)
+
+
+# Display basic informations about the scan
+def scanresults():
+    global result_count
+    global result_files
+    print ("Found {} vulnerabilities in {} files").format(result_count,result_files)

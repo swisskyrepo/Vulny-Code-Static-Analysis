@@ -9,19 +9,13 @@
 # TODO checker recursivement les vulns dans la déclaration d'une var
 # BUG color var['something']
 # BUG XPATH injection var declaration $employees
-# BUG PGSQL : pg_pconnect / pg_connect detected 
-# TODO count of vuln (passer une var à analysis, recursive et l'incrementer
-"""
-invcount = 0
-def inv_sort (listIn):
-    global invcount
-    invcount += 1
-"""
+# BUG PGSQL : pg_pconnect / pg_connect detected
 
 import sys
 import argparse
 import os, re
 from detection import *
+from indicators import *
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -44,5 +38,7 @@ if __name__ == "__main__":
             analysis(results.dir)
         else:
             recursive(results.dir,0)
+        scanresults()
+
     else:
         parser.print_help()
