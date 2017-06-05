@@ -8,7 +8,6 @@
 # TODO afficher toutes les modifications de la variable -
 # TODO checker recursivement les vulns dans la déclaration d'une var
 # BUG color var['something']
-# BUG XPATH injection var declaration $employees
 # BUG PGSQL : pg_pconnect / pg_connect detected
 
 import sys

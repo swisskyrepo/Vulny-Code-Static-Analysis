@@ -87,6 +87,7 @@ def check_declaration(content, vuln, path):
     # Follow and parse include, then add it's content
     regex_declaration = re.compile("(include.*?|require.*?)\([\"\'](.*?)[\"\']\)")
     includes          = regex_declaration.findall(content)
+
 	# Path is the path of the current scanned file, we can use it to compute the relative include
     for include in includes:
 		relative_include = os.path.dirname(path)+"/"
@@ -94,7 +95,13 @@ def check_declaration(content, vuln, path):
 		with open(path_include, 'r') as f:
 			content = f.read() + content
 
-	# Extract declaration
+	# Extract declaration - for ($something as $somethingelse)
+    regex_declaration2 = re.compile("\$(.*?)([\t ]*)as(?!=)([\t ]*)\$"+vuln[1:])
+    declaration2       = regex_declaration2.findall(content)
+    if len(declaration2) > 0:
+		return check_declaration(content, "$"+declaration2[0][0], path)
+
+	# Extract declaration - $something = $_GET['something']
     regex_declaration = re.compile("\$"+vuln[1:]+"([\t ]*)=(?!=)(.*)")
     declaration       = regex_declaration.findall(content)
     if len(declaration)>0:

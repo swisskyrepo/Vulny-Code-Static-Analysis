@@ -14,7 +14,7 @@
     $employees = $xml->xpath('/employees/employee[age<54]');
 
     foreach($employees as $employee) {
-        echo "Found {$employee->name}<br />";
+        echo "Found {$employee->id}<br />";
     }
 
     echo "<br />";
@@ -24,7 +24,7 @@
     $employees = $xml->xpath('//employee[age>='.$age.']');
 
     foreach($employees as $employee) {
-        echo "Found {$employee->name}<br />";
+        echo "Found {$employee->age}<br />";
     }
 
     echo "<br />";
