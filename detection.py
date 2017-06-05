@@ -24,6 +24,7 @@ def analysis(path):
       matches = regex.findall(content)
 
       for vuln_content in matches:
+
         # Security hole detected, is it protected ?
       	if check_protection(payload[2], vuln_content) == False:
             declaration_text, line_declaration = "",""
@@ -34,15 +35,14 @@ def analysis(path):
             for vulnerable_var in regax.findall(sentence):
                 false_positive = False
 
-                # BUG nt des var et mettre en couleur la bonne plutôt que la première
-                # BUG ex fct(occurence) et mettre en couleur la xieme occurence
                 # No declaration for $_GET, $_POST ...
                 if check_exception(vulnerable_var[1]) == False:
+
                     # Look for the declaration of $something = xxxxx
                     false_positive, declaration_text, line_declaration = check_declaration(content, vulnerable_var[1], path)
-
-                # Set false positive if protection is in the variable's declaration
-                false_positive = false_positive or check_protection(payload[2], declaration_text)==True
+                    
+                    # Set false positive if protection is in the variable's declaration
+                    false_positive = false_positive or check_protection(payload[2], declaration_text)==True
 
                 # Display all the vuln
                 line_vuln = find_line_vuln(path, payload, vuln_content, content)

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
- 
+
 # /!\ Detection Format (.*)function($vuln)(.*) matched by payload[0]+regex_indicators
 regex_indicators = '\((.*?)(\$_GET\[.*?\]|\$_FILES\[.*?\]|\$_POST\[.*?\]|\$_REQUEST\[.*?\]|\$_COOKIES\[.*?\]|\$_SESSION\[.*?\]|\$(?!this|e-)[a-zA-Z0-9_]*)(.*?)\)'
 
@@ -37,7 +37,7 @@ payloads = [
   ["mysqli_real_query","SQL Injection",["mysql_real_escape_string"]],
   ["mysqli::query","SQL Injection",["mysql_real_escape_string"]],
   ["mysqli_query","SQL Injection",["mysql_real_escape_string"]],
-  ["pg_query","SQL Injection",["pg_escape_string"]],
+  ["pg_query","SQL Injection",["pg_escape_string","pg_pconnect"]],
   ["->query","SQL Injection",["->prepare"]],
   ["->exec","SQL Injection",["->prepare"]],
   ["->execute","SQL Injection",["->prepare"]],

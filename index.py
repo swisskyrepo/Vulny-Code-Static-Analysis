@@ -9,6 +9,8 @@
 # TODO checker recursivement les vulns dans la déclaration d'une var
 # BUG color var['something']
 # BUG PGSQL : pg_pconnect / pg_connect detected
+# BUG nt des var et mettre en couleur la bonne plutôt que la première
+# BUG ex fct(occurence) et mettre en couleur la xieme occurence
 
 import sys
 import argparse
