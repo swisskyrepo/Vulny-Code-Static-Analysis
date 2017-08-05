@@ -21,3 +21,10 @@ Currently detecting :
  - Local File Inclusion
  - Insecure emails
  - Cross Site Scripting
+ - Remote Commands Execution
+ - LDAP injection
+ - XPATH injection
+ - Header injection
+ - URL redirection
+
+Don't forget to read the [license](/LICENSE) ;)
