@@ -103,9 +103,13 @@ def check_declaration(content, vuln, path):
 	# Path is the path of the current scanned file, we can use it to compute the relative include
     for include in includes:
 		relative_include = os.path.dirname(path)+"/"
-		path_include     = relative_include + include[1]
-		with open(path_include, 'r') as f:
-			content = f.read() + content
+		try:
+			path_include     = relative_include + include[1]
+			with open(path_include, 'r') as f:
+				content = f.read() + content
+		except Exception as e:
+			return (False, "","")
+
 
 	# Extract declaration - for ($something as $somethingelse)
     regex_declaration2 = re.compile("\$(.*?)([\t ]*)as(?!=)([\t ]*)\$"+vuln[1:])
