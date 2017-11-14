@@ -18,39 +18,34 @@ def nth_replace(string, old, new, n):
 
 # Display the found vulnerability with basic informations like the line
 def display(path,payload,vulnerability,line,declaration_text,declaration_line, colored, occurence):
+    # Potential vulnerability found :  SQL Injection
+    header = "\033[1mPotential vulnerability found : \033[92m{}\033[0m".format(payload[1])
 
-	# Potential vulnerability found :  SQL Injection
-	header = "\033[1mPotential vulnerability found : \033[92m{}\033[0m".format(payload[1])
+    # Line  25  in test/sqli.php
+    line = "n°\033[92m{}\033[0m in {}".format(line,path)
 
-	# Line  25  in test/sqli.php
-	line = "n°\033[92m{}\033[0m in {}".format(line,path)
+    # Code : include($_GET['patisserie'])
+    vuln = nth_replace("".join(vulnerability), colored, "\033[93m"+colored+"\033[0m", occurence)
+    vuln = "{}({})".format(payload[0], vuln)
 
-	# Code : include($_GET['patisserie'])
-	vuln = nth_replace("".join(vulnerability), colored, "\033[93m"+colored+"\033[0m", occurence)
-	vuln = "{}({})".format(payload[0], vuln)
+    # Final Display
+    rows, columns = os.popen('stty size', 'r').read().split()
+    print "-" * (int(columns)-1)
+    print "Name        " + "\t"+header
+    print "-" * (int(columns)-1)
+    print "\033[1mLine \033[0m        " + "\t"+line
+    print "\033[1mCode \033[0m        " + "\t"+vuln
 
-	# Final Display
-	rows, columns = os.popen('stty size', 'r').read().split()
-	print "-" * (int(columns)-1)
-	print "Name        " + "\t"+header
-	print "-" * (int(columns)-1)
-	print "\033[1mLine \033[0m        " + "\t"+line
-	print "\033[1mCode \033[0m        " + "\t"+vuln
+    # Declared at line 1 : $dest = $_GET['who'];
+    if not "$_" in colored:
+        declared = "Undeclared in the file"
+        if declaration_text != "":
+            declared = "Line n°\033[0;92m"+declaration_line+"\033[0m : "+ declaration_text
 
-	# Declared at line 1 : $dest = $_GET['who'];
-	declared = "Undeclared \033[0m"+ declaration_text+" in the file"
-	if not "$_" in colored:
-
-        # Check for not $dest="constant"; $dest='cste'; $dest=XX;
-		if "$" in declaration_text.replace(colored,''):
-
-			if declaration_text != "":
-				declared = "Line n°\033[0;92m"+declaration_line+"\033[0m : "+ declaration_text
-
-	print "\033[1mDeclaration \033[0m " + "\t"+declared
+        print "\033[1mDeclaration \033[0m " + "\t"+declared
 
 	# Small delimiter
-	print ""
+    print ""
 
 # Find the line where the vulnerability is located
 def find_line_vuln(path,payload,vulnerability,content):

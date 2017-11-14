@@ -48,6 +48,12 @@ def analysis(path):
 
                 # Display all the vuln
                 line_vuln = find_line_vuln(path, payload, vuln_content, content)
+
+                # Check for not $dest="constant"; $dest='cste'; $dest=XX;
+                if not "$_" in vulnerable_var[1]:
+                    if not "$" in declaration_text.replace(vulnerable_var[1],''):
+                        false_positive = True
+
                 if not false_positive:
                     global result_count
                     result_count = result_count + 1
