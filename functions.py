@@ -40,11 +40,15 @@ def display(path,payload,vulnerability,line,declaration_text,declaration_line, c
 	# Declared at line 1 : $dest = $_GET['who'];
 	declared = ""
 	if not "$_" in colored:
-		if declaration_text != "":
-			declared = "Line n°\033[0;92m"+declaration_line+"\033[0m : "+ declaration_text
-		else:
-			declared = "Undeclared \033[0m"+ declaration_text+" in the file"
-		print "\033[1mDeclaration \033[0m " + "\t"+declared
+
+        # Check for not $dest="constant"; $dest='cste'; $dest=XX;
+		if "$" in declaration_text.replace(colored,''):
+
+			if declaration_text != "":
+				declared = "Line n°\033[0;92m"+declaration_line+"\033[0m : "+ declaration_text
+			else:
+				declared = "Undeclared \033[0m"+ declaration_text+" in the file"
+			print "\033[1mDeclaration \033[0m " + "\t"+declared
 
 	# Small delimiter
 	print ""

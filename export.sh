@@ -15,4 +15,4 @@ cat Report/exported.txt | grep "URL Redirection" -A4 > Report/URL_Redirection.tx
 
 
 echo "Found :"
-ls -ail /Report
+ls -ail Report
