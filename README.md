@@ -26,5 +26,8 @@ Currently detecting :
  - XPATH injection
  - Header injection
  - URL redirection
+ - Hardcoded credential
+
+> if you want to export each vulnerabilities type into a folder use the "export.sh"
 
 Don't forget to read the [license](/LICENSE) ;)

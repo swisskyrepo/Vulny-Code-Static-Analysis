@@ -18,7 +18,35 @@ def analysis(path):
     content = content_file.read()
     content = clean_source_and_format(content)
 
-    # Detection of RCE/SQLI/LFI/RFI/RFU/XSS
+    # Hardcoded credentials (work as an exception, it's not function based)
+    credz = ['pass', 'secret', 'token', 'pwd']
+    for credential in credz:
+
+         content_pure = content.replace(' ','')
+         regex = re.compile("\$"+credential+".*?=[\"|'][^\$]+[\"|']", re.I)
+         matches = regex.findall(content_pure)
+
+         # If we find a variable with a constant for a given indicator
+         for vuln_content in matches:
+             payload = ["","Hardcoded Credential",[]]
+
+             # Get the line
+             line_vuln = -1
+             splitted_content = content.split('\n')
+             for i in range(len( splitted_content )):
+                 regex = re.compile("\$"+credential+".*?=", re.I)
+                 matches = regex.findall(splitted_content[i])
+                 if len(matches) > 0:
+                     line_vuln = i
+
+             declaration_text = vuln_content
+             line_declaration = str(line_vuln)
+             occurence = 1
+
+             display(path, payload, vuln_content, line_vuln, declaration_text, line_declaration, vuln_content, occurence)
+
+
+    # Detection of RCE/SQLI/LFI/RFI/RFU/XSS/...
     for payload in payloads:
       regex   = re.compile(payload[0]+regex_indicators)
       matches = regex.findall(content)
