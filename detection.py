@@ -13,7 +13,7 @@ result_files = 0
 def analysis(path, plain):
     global result_files
     result_files += 1
-    with open(path, 'r') as content_file:
+    with open(path, 'r', encoding='utf-8', errors='replace') as content_file:
 
         # Clean source for a better detection
         content = content_file.read()
