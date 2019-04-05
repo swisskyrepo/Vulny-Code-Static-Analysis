@@ -1,6 +1,8 @@
+#!/usr/bin/env bash
+
 echo "Generating report"
 mkdir Report 2> /dev/null
-python index.py --dir $1 > Report/exported.txt
+python index.py --dir $1 --plain > Report/exported.txt
 cat Report/exported.txt | grep "Remote Co" -A4 > Report/RemoteCodeExecution.txt
 cat Report/exported.txt | grep "File Inclusion" -A4 > Report/File_Inclusion.txt
 cat Report/exported.txt | grep "SQL Injection" -A4 > Report/SQL_Injection.txt
