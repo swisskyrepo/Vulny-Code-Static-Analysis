@@ -30,11 +30,11 @@ def display(path,payload,vulnerability,line,declaration_text,declaration_line, c
 
     # Final Display
     rows, columns = os.popen('stty size', 'r').read().split()
-    print "-" * (int(columns)-1)
-    print "Name        \t{}".format(header)
-    print "-" * (int(columns)-1)
-    print "{}Line {}             {}".format('' if plain else '\033[1m', '' if plain else '\033[0m', line)
-    print "{}Code {}             {}".format('' if plain else '\033[1m', '' if plain else '\033[0m', vuln)
+    print("-" * (int(columns)-1))
+    print("Name        \t{}".format(header))
+    print("-" * (int(columns)-1))
+    print("{}Line {}             {}".format('' if plain else '\033[1m', '' if plain else '\033[0m', line))
+    print("{}Code {}             {}".format('' if plain else '\033[1m', '' if plain else '\033[0m', vuln))
 
     # Declared at line 1 : $dest = $_GET['who'];
     if not "$_" in colored:
@@ -43,34 +43,34 @@ def display(path,payload,vulnerability,line,declaration_text,declaration_line, c
             declared = "Line n°{}{}{} : {}".format('' if plain else '\033[0;92m', declaration_line, '' if plain else '\033[0m', declaration_text)
             #declared = "Line n°\033[0;{}m{}\033[0m : {}".format('0' if plain else '92', declaration_line, declaration_text)
 
-        print "{}Declaration {}      {}".format('' if plain else '\033[1m', '' if plain else '\033[0m', declared)
+        print("{}Declaration {}      {}".format('' if plain else '\033[1m', '' if plain else '\033[0m', declared))
 
     # Small delimiter
-    print ""
+    print("")
 
 # Find the line where the vulnerability is located
 def find_line_vuln(path,payload,vulnerability,content):
-	content = content.split('\n')
-	for i in range(len(content)):
-		if payload[0]+'('+vulnerability[0]+vulnerability[1]+vulnerability[2]+')' in content[i]:
-			return str(i-1)
-	return "-1"
+    content = content.split('\n')
+    for i in range(len(content)):
+        if payload[0]+'('+vulnerability[0]+vulnerability[1]+vulnerability[2]+')' in content[i]:
+            return str(i-1)
+    return "-1"
 
 
 # Find the line where the entry point is declared
 # TODO: should be an array of the declaration and modifications
 def find_line_declaration(declaration, content):
-	content = content.split('\n')
-	for i in range(len(content)):
-		if declaration in content[i]:
-			return str(i)
-	return "-1"
+    content = content.split('\n')
+    for i in range(len(content)):
+        if declaration in content[i]:
+            return str(i)
+    return "-1"
 
 
 # Format the source code in order to improve the detection
 def clean_source_and_format(content):
     # Clean up - replace tab by space
-    content = content.replace("	"," ")
+    content = content.replace("    "," ")
 
     # Quickfix to detect both echo("something") and echo "something"
     content = content.replace("echo ","echo(")
@@ -99,37 +99,37 @@ def check_declaration(content, vuln, path):
     regex_declaration = re.compile("(include.*?|require.*?)\([\"\'](.*?)[\"\']\)")
     includes          = regex_declaration.findall(content)
 
-	# Path is the path of the current scanned file, we can use it to compute the relative include
+    # Path is the path of the current scanned file, we can use it to compute the relative include
     for include in includes:
-		relative_include = os.path.dirname(path)+"/"
-		try:
-			path_include     = relative_include + include[1]
-			with open(path_include, 'r') as f:
-				content = f.read() + content
-		except Exception as e:
-			return (False, "","")
+        relative_include = os.path.dirname(path)+"/"
+        try:
+            path_include     = relative_include + include[1]
+            with open(path_include, 'r') as f:
+                content = f.read() + content
+        except Exception as e:
+            return (False, "","")
 
 
-	# Extract declaration - for ($something as $somethingelse)
+    # Extract declaration - for ($something as $somethingelse)
     vulnerability = vuln[1:].replace(')', '\)').replace('(', '\(')
     regex_declaration2 = re.compile("\$(.*?)([\t ]*)as(?!=)([\t ]*)\$"+vulnerability)
     declaration2       = regex_declaration2.findall(content)
     if len(declaration2) > 0:
-		return check_declaration(content, "$"+declaration2[0][0], path)
+        return check_declaration(content, "$"+declaration2[0][0], path)
 
-	# Extract declaration - $something = $_GET['something']
+    # Extract declaration - $something = $_GET['something']
     regex_declaration = re.compile("\$"+vulnerability+"([\t ]*)=(?!=)(.*)")
     declaration       = regex_declaration.findall(content)
     if len(declaration)>0:
 
-		# Check constant then return True if constant because it's false positive
-		declaration_text = "$"+vulnerability +declaration[0][0]+"="+declaration[0][1]
-		line_declaration = find_line_declaration(declaration_text, content)
-		regex_constant = re.compile("\$"+vuln[1:]+"([\t ]*)=[\t ]*?([\"\'(]*?[a-zA-Z0-9{}_\(\)@\.,!: ]*?[\"\')]*?);")
-		false_positive = regex_constant.match(declaration_text)
+        # Check constant then return True if constant because it's false positive
+        declaration_text = "$"+vulnerability +declaration[0][0]+"="+declaration[0][1]
+        line_declaration = find_line_declaration(declaration_text, content)
+        regex_constant = re.compile("\$"+vuln[1:]+"([\t ]*)=[\t ]*?([\"\'(]*?[a-zA-Z0-9{}_\(\)@\.,!: ]*?[\"\')]*?);")
+        false_positive = regex_constant.match(declaration_text)
 
-		if false_positive:
-			return (True, "","")
-		return (False, declaration_text,line_declaration)
+        if false_positive:
+            return (True, "","")
+        return (False, declaration_text,line_declaration)
 
     return (False, "","")
