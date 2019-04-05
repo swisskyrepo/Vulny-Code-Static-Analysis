@@ -105,8 +105,7 @@ def recursive(dir, progress, plain):
                 recursive(dir + "/" + name, progress, plain)
 
     except OSError as e:
-        print
-        "Error 404 - Not Found, maybe you need more right ?" + " " * 30
+        print("Error 404 - Not Found, maybe you need more right ?" + " " * 30)
         exit(-1)
 
 
