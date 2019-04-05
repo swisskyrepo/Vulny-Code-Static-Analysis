@@ -19,13 +19,13 @@ def nth_replace(string, old, new, n):
 # Display the found vulnerability with basic informations like the line
 def display(path,payload,vulnerability,line,declaration_text,declaration_line, colored, occurence, plain):
     # Potential vulnerability found :  SQL Injection
-    header = "\033[{}mPotential vulnerability found : \033[{}m{}\033[0m".format('0' if plain else '1', '0' if plain else '92', payload[1])
+    header = "{}Potential vulnerability found : {}{}{}".format('' if plain else '\033[1m', '' if plain else '\033[92m', payload[1], '' if plain else '\033[0m')
 
     # Line  25  in test/sqli.php
-    line = "n°\033[{}m{}\033[0m in {}".format('0' if plain else '92',line,path)
+    line = "n°{}{}{} in {}".format('' if plain else '\033[92m',line, '' if plain else '\033[0m', path)
 
     # Code : include($_GET['patisserie'])
-    vuln = nth_replace("".join(vulnerability), colored, "\033[{}m".format('0' if plain else '92')+colored+"\033[0m", occurence)
+    vuln = nth_replace("".join(vulnerability), colored, "{}".format('' if plain else '\033[92m')+colored+"{}".format('' if plain else '\033[0m'), occurence)
     vuln = "{}({})".format(payload[0], vuln)
 
     # Final Display
@@ -33,16 +33,17 @@ def display(path,payload,vulnerability,line,declaration_text,declaration_line, c
     print "-" * (int(columns)-1)
     print "Name        \t{}".format(header)
     print "-" * (int(columns)-1)
-    print "\033[{}mLine \033[0m             {}".format('0' if plain else '1', line)
-    print "\033[{}mCode \033[0m             {}".format('0' if plain else '1', vuln)
+    print "{}Line {}             {}".format('' if plain else '\033[1m', '' if plain else '\033[0m', line)
+    print "{}Code {}             {}".format('' if plain else '\033[1m', '' if plain else '\033[0m', vuln)
 
     # Declared at line 1 : $dest = $_GET['who'];
     if not "$_" in colored:
         declared = "Undeclared in the file"
         if declaration_text != "":
-            declared = "Line n°\033[0;{}m{}\033[0m : {}".format('0' if plain else '92', declaration_line, declaration_text)
+            declared = "Line n°{}{}{} : {}".format('' if plain else '\033[0;92m', declaration_line, '' if plain else '\033[0m', declaration_text)
+            #declared = "Line n°\033[0;{}m{}\033[0m : {}".format('0' if plain else '92', declaration_line, declaration_text)
 
-        print "\033[{}mDeclaration \033[0m      {}".format('0' if plain else '1', declared)
+        print "{}Declaration {}      {}".format('' if plain else '\033[1m', '' if plain else '\033[0m', declared)
 
     # Small delimiter
     print ""
