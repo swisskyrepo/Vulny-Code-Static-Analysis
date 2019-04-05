@@ -24,7 +24,8 @@ def analysis(path, plain):
         for credential in credz:
 
             content_pure = content.replace(' ', '')
-            regex = re.compile("\$" + credential + ".*?=[\"|'][^\$]+[\"|']", re.I)
+            credential += ".*?=[\"|'][^\\$]+[\"|']"
+            regex = re.compile("\\$" + credential, re.I)
             matches = regex.findall(content_pure)
 
             # If we find a variable with a constant for a given indicator
@@ -35,16 +36,26 @@ def analysis(path, plain):
                 line_vuln = -1
                 splitted_content = content.split('\n')
                 for i in range(len(splitted_content)):
-                    regex = re.compile("\$" + credential + ".*?=", re.I)
+                    regex = re.compile("\\$" + credential + ".*?=", re.I)
                     matches = regex.findall(splitted_content[i])
                     if len(matches) > 0:
                         line_vuln = i
 
                 declaration_text = vuln_content
-                line_declaration = str(line_vuln)
+                line = str(line_vuln)
                 occurence = 1
 
-                display(path, payload, vuln_content, line_vuln, declaration_text, line_declaration, vuln_content, occurence, plain)
+                display(
+                    path,
+                    payload,
+                    vuln_content,
+                    line_vuln,
+                    declaration_text,
+                    line,
+                    vuln_content,
+                    occurence,
+                    plain
+                )
 
         # Detection of RCE/SQLI/LFI/RFI/RFU/XSS/...
         for payload in payloads:
@@ -55,43 +66,48 @@ def analysis(path, plain):
                 occurence = 0
 
                 # Security hole detected, is it protected ?
-                if check_protection(payload[2], vuln_content) == False:
-                    declaration_text, line_declaration = "", ""
+                if not check_protection(payload[2], vuln_content):
+                    declaration_text, line = "", ""
 
                     # Managing multiple variable in a single line/function
                     sentence = "".join(vuln_content)
-                    regax = re.compile(regex_indicators[2:-2])
-                    for vulnerable_var in regax.findall(sentence):
+                    regex = re.compile(regex_indicators[2:-2])
+                    for vulnerable_var in regex.findall(sentence):
                         false_positive = False
                         occurence += 1
 
                         # No declaration for $_GET, $_POST ...
-                        if check_exception(vulnerable_var[1]) == False:
+                        if not check_exception(vulnerable_var[1]):
                             # Look for the declaration of $something = xxxxx
-                            false_positive, declaration_text, line_declaration = check_declaration(content, vulnerable_var[1], path)
+                            false_positive, declaration_text, line = check_declaration(
+                                content,
+                                vulnerable_var[1],
+                                path)
 
                             # Set false positive if protection is in the variable's declaration
-                            false_positive = false_positive or check_protection(payload[2], declaration_text) == True
+                            is_protected = check_protection(payload[2], declaration_text)
+                            false_positive = is_protected if is_protected else false_positive
 
                         # Display all the vuln
-                        line_vuln = find_line_vuln(path, payload, vuln_content, content)
+                        line_vuln = find_line_vuln(payload, vuln_content, content)
 
                         # Check for not $dest="constant"; $dest='cste'; $dest=XX;
-                        if not "$_" in vulnerable_var[1]:
-                            if not "$" in declaration_text.replace(vulnerable_var[1], ''):
+                        if "$_" not in vulnerable_var[1]:
+                            if "$" not in declaration_text.replace(vulnerable_var[1], ''):
                                 false_positive = True
 
                         if not false_positive:
                             global result_count
                             result_count = result_count + 1
-                            display(path, payload, vuln_content, line_vuln, declaration_text, line_declaration, vulnerable_var[1], occurence, plain)
+                            display(path, payload, vuln_content, line_vuln, declaration_text, line, vulnerable_var[1], occurence, plain)
 
 
 # Run thru every files and subdirectories
 def recursive(dir, progress, plain):
     progress += 1
     progress_indicator = '⬛'
-    if plain: progress_indicator = "█"
+    if plain:
+        progress_indicator = "█"
     try:
         for name in os.listdir(dir):
 
