@@ -91,9 +91,12 @@ def analysis(path,plain):
 # Run thru every files and subdirectories
 def recursive(dir,progress,plain):
     progress += 1
+    progress_indicator = '⬛'
+    if plain: progress_indicator = "█"
     try:
       for name in os.listdir(dir):
-        print('\tAnalyzing : '+'⬛'*progress+'\r'),
+
+        print('\tAnalyzing : '+ progress_indicator * progress+'\r'),
 
         # Targetting only PHP Files
         if os.path.isfile(os.path.join(dir, name)):
