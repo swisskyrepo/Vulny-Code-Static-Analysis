@@ -29,7 +29,7 @@ if __name__ == "__main__":
         print "\-'\   /   \  '-'(_ .' |     |'|  | \   |  `-/   /` (_'  '--'\  '  '-'  '|  '-'  / |  `---."
         print "    `-'     `-----'    `-----' `--'  `--'    `--'      `-----'   `-----' `------'  `------'"
         print "                                                            Copyright @pentest_swissky     "
-        print ("\n\033[{}mAnalyzing '{}' source code\033[{}m".format('0' if results.plain else '1', results.dir, '0'))
+        print ("\n{}Analyzing '{}' source code{}".format('' if results.plain else '\033[1m', results.dir, '' if results.plain else '\033[0m'))
 
         if os.path.isfile(results.dir):
             analysis(results.dirm, results.plain)
