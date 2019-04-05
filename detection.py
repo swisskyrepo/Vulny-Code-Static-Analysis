@@ -9,7 +9,7 @@ result_count = 0
 result_files = 0
 
 # Analyse the source code of a single page
-def analysis(path):
+def analysis(path,plain):
   global result_files
   result_files += 1
   with open(path, 'r') as content_file:
@@ -43,7 +43,7 @@ def analysis(path):
              line_declaration = str(line_vuln)
              occurence = 1
 
-             display(path, payload, vuln_content, line_vuln, declaration_text, line_declaration, vuln_content, occurence)
+             display(path, payload, vuln_content, line_vuln, declaration_text, line_declaration, vuln_content, occurence, plain)
 
 
     # Detection of RCE/SQLI/LFI/RFI/RFU/XSS/...
@@ -85,11 +85,11 @@ def analysis(path):
                 if not false_positive:
                     global result_count
                     result_count = result_count + 1
-                    display(path, payload, vuln_content, line_vuln, declaration_text, line_declaration, vulnerable_var[1], occurence)
+                    display(path, payload, vuln_content, line_vuln, declaration_text, line_declaration, vulnerable_var[1], occurence, plain)
 
 
 # Run thru every files and subdirectories
-def recursive(dir,progress):
+def recursive(dir,progress,plain):
     progress += 1
     try:
       for name in os.listdir(dir):
@@ -98,9 +98,9 @@ def recursive(dir,progress):
         # Targetting only PHP Files
         if os.path.isfile(os.path.join(dir, name)):
             if ".php" in os.path.join(dir, name):
-                analysis(dir+"/"+name)
+                analysis(dir+"/"+name,plain)
         else :
-            recursive(dir+"/"+name, progress)
+            recursive(dir+"/"+name, progress,plain)
 
     except OSError, e:
         print "Error 404 - Not Found, maybe you need more right ?"+" "*30
