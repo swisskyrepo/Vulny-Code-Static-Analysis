@@ -16,6 +16,7 @@ from indicators import *
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', action ='store', dest='dir', help="Directory to analyse")
+    parser.add_argument('--plain', action ='store_true', dest='plain', help="No color in output")
     results = parser.parse_args()
 
     if results.dir != None:
@@ -28,12 +29,12 @@ if __name__ == "__main__":
         print "\-'\   /   \  '-'(_ .' |     |'|  | \   |  `-/   /` (_'  '--'\  '  '-'  '|  '-'  / |  `---."
         print "    `-'     `-----'    `-----' `--'  `--'    `--'      `-----'   `-----' `------'  `------'"
         print "                                                            Copyright @pentest_swissky     "
-        print "\n\033[1mAnalyzing '"+results.dir+"' source code\033[0m"
+        print ("\n\033[{}mAnalyzing '{}' source code\033[{}m".format('0' if results.plain else '1', results.dir, '0'))
 
         if os.path.isfile(results.dir):
-            analysis(results.dir)
+            analysis(results.dirm, results.plain)
         else:
-            recursive(results.dir,0)
+            recursive(results.dir,0, results.plain)
         scanresults()
 
     else:
