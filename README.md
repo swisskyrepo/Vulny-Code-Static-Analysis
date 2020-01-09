@@ -2,7 +2,8 @@
 
 [![Python 3.4+](https://img.shields.io/badge/python-3.4+-blue.svg)](https://www.python.org/downloads/release/python-360/)
 
-Basic script to detect vulnerabilities into a PHP source code
+Basic script to detect vulnerabilities into a PHP source code, it is using Regular Expression to find sinkholes.
+
 ```bash
 ╭─ 👻 swissky@crashlab: ~/Github/PHP_Code_Static_Analysis  ‹master*›
 ╰─$ python index.py --dir test    

@@ -1,5 +1,8 @@
 <?php
-  // Fake configuration (include follow ?)
+define("USERNAME", "admin");
+define("PASSWORD", "pwd123*");
+
+// Fake configuration (include follow ?)
   $DB_HOST = "localhost";
 	$DB_NAME = "securitychalls";
 	$DB_USER = "admin";
@@ -11,4 +14,6 @@
   $pwd   = "mysuper_cr3dz";
   $pass  = $pwd.$token;
   $Pass  = "case!nsenSitiveP@ss"
- ?>
+
+
+?>

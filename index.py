@@ -1,22 +1,23 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Author     : Swissky
-# How to use : python index.py --dir test
-# Educational purpose only !
-
-# TODO afficher toutes les modifications de la variable
-
+import sys
 import argparse
 from detection import *
 
 if __name__ == "__main__":
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', action='store', dest='dir', help="Directory to analyse")
     parser.add_argument('--plain', action='store_true', dest='plain', help="No color in output")
     results = parser.parse_args()
 
     if results.dir is not None:
+        # default recursion is limited to 1000
+        # since we browse files recursively,
+        # we need to set an higher threshold
+        sys.setrecursionlimit(1000000)
+
         print("""      (`-')                    <-. (`-')_                                _(`-')    (`-')  _
              _(OO )     .->      <-.      \\( OO) )     .->   _             .->  ( (OO ).-> ( OO).-/
         ,--.(_/,-.\\,--.(,--.   ,--. )  ,--./ ,--/  ,--.'  ,-.\\-,-----.(`-')----. \\    .'_ (,------.

@@ -11,6 +11,7 @@ result_files = 0
 
 # Analyse the source code of a single page
 def analysis(path, plain):
+    global result_count
     global result_files
     result_files += 1
     with open(path, 'r', encoding='utf-8', errors='replace') as content_file:
@@ -22,40 +23,44 @@ def analysis(path, plain):
         # Hardcoded credentials (work as an exception, it's not function based)
         credz = ['pass', 'secret', 'token', 'pwd']
         for credential in credz:
-
             content_pure = content.replace(' ', '')
-            credential += ".*?=[\"|'][^\\$]+[\"|']"
-            regex = re.compile("\\$" + credential, re.I)
-            matches = regex.findall(content_pure)
 
+            # detect all variables
+            regex_var_detect = "\$[\w\s]+\s?=\s?[\"|'].*[\"|']|define\([\"|'].*[\"|']"
+            regex = re.compile(regex_var_detect , re.I)
+            matches = regex.findall(content_pure)
+            
             # If we find a variable with a constant for a given indicator
             for vuln_content in matches:
-                payload = ["", "Hardcoded Credential", []]
+                if credential in vuln_content.lower():
+                    payload = ["", "Hardcoded Credential", []]
 
-                # Get the line
-                line_vuln = -1
-                splitted_content = content.split('\n')
-                for i in range(len(splitted_content)):
-                    regex = re.compile("\\$" + credential + ".*?=", re.I)
-                    matches = regex.findall(splitted_content[i])
-                    if len(matches) > 0:
-                        line_vuln = i
+                    # Get the line
+                    line_vuln = -1
+                    splitted_content = content.split('\n')
+                    for i in range(len(splitted_content)):
+                        regex = re.compile(regex_var_detect, re.I)
+                        matches = regex.findall(splitted_content[i])
+                        if len(matches) > 0:
+                            line_vuln = i
 
-                declaration_text = vuln_content
-                line = str(line_vuln)
-                occurence = 1
+                    declaration_text = vuln_content
+                    line = str(line_vuln)
+                    occurence = 1
 
-                display(
-                    path,
-                    payload,
-                    vuln_content,
-                    line_vuln,
-                    declaration_text,
-                    line,
-                    vuln_content,
-                    occurence,
-                    plain
-                )
+                    result_count = result_count + 1
+
+                    display(
+                        path,
+                        payload,
+                        vuln_content,
+                        line_vuln,
+                        declaration_text,
+                        line,
+                        vuln_content,
+                        occurence,
+                        plain
+                    )
 
         # Detection of RCE/SQLI/LFI/RFI/RFU/XSS/...
         for payload in payloads:
@@ -97,7 +102,6 @@ def analysis(path, plain):
                                 false_positive = True
 
                         if not false_positive:
-                            global result_count
                             result_count = result_count + 1
                             display(path, payload, vuln_content, line_vuln, declaration_text, line, vulnerable_var[1], occurence, plain)
 
@@ -111,7 +115,7 @@ def recursive(dir, progress, plain):
     try:
         for name in os.listdir(dir):
 
-            print('\tAnalyzing : ' + progress_indicator * progress + '\r'),
+            print('\tAnalyzing : ' + progress_indicator * progress + '\r', end="\r"),
 
             # Targetting only PHP Files
             if os.path.isfile(os.path.join(dir, name)):
