@@ -28,9 +28,11 @@ Currently detecting :
  - Remote Commands Execution
  - LDAP injection
  - XPATH injection
+ - PHP Objet Injection
  - Header injection
  - URL redirection
  - Hardcoded credential
+ - High Entropy string
 
 > if you want to export each vulnerabilities type into a folder use the "export.sh"
 
