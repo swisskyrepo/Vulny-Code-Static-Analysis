@@ -19,6 +19,7 @@
   $fakeAPI1 = "AIzad8e8fca2dc0f896fd7cb4cb0031ba249123";
   $fakeAPI2 = "AKIAD8E8FCA2DC0F896F";
   $hash2 = "$1$VnG/6ABB$t6w9bQFxvI9tf0sFJf2TR.";
+  $hash3 = "d8e8fca2dc0f896fd7cb4cb0031ba249";
 
   if($pass == "$6$q8C1F6tv$zTP/eEVixqyQBEfsSbTidUJfnaE2ojNIpTwTHava/UhFORv3V4ehyTOGdQEoFo1dEVG6UcXwhG.UHvyQyERz01"){
     echo "Hardcoded !";

@@ -62,7 +62,6 @@ def analysis(path, plain):
 
         for vuln_content in matches:
             payload = ["", "High Entropy String", []]
-
             if shannon_entropy(vuln_content, BASE64_CHARS) >= 4.1 or \
                 shannon_entropy(vuln_content, HEX_CHARS) >= 2.5:
                 add_vuln_var(payload, plain, path, vuln_content, content, regex_var_detect)
