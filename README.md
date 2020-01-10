@@ -1,4 +1,4 @@
-# PHP_Code_Static_Analysis
+# VulnyCode - PHP Code Static Analysis
 
 [![Python 3.4+](https://img.shields.io/badge/python-3.4+-blue.svg)](https://www.python.org/downloads/release/python-360/)
 
