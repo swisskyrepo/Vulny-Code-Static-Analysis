@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # /!\ Detection Format (.*)function($vuln)(.*) matched by payload[0]+regex_indicators
-regex_indicators = '\\((.*?)(\\$_GET\\[.*?\\]|\\$_FILES\\[.*?\\]|\\$_POST\\[.*?\\]|\\$_REQUEST\\[.*?\\]|\\$_COOKIES\\[.*?\\]|\\$_SESSION\\[.*?\\]|\\$(?!this|e-)[a-zA-Z0-9_]*)(.*?)\\)'
+regex_indicators = '\\((.*?)(\\$_GET\\[.*?\\]|\\$_FILES\\[.*?\\]|\\$_POST\\[.*?\\]|\\$_REQUEST\\[.*?\\]|\\$_COOKIES\\[.*?\\]|\\$_SESSION\\[.*?\\]|\\$(?!this|e-)[a-zA-Z0-9_,]*)(.*?)\\)'
 
 # Function_Name:String, Vulnerability_Name:String, Protection_Function:Array
 payloads = [
@@ -14,8 +14,10 @@ payloads = [
     ["passthru", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
     ["exec", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
     ["shell_exec", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
+    ["pcntl_exec", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
     ["assert", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
     ["proc_open", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
+    ["create_function", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
     ["call_user_func", "Remote Code Execution", []],
     ["call_user_func_array", "Remote Code Execution", []],
     ["preg_replace", "Remote Command Execution", ["preg_quote"]],
@@ -33,6 +35,7 @@ payloads = [
 
     ["readfile", "File Inclusion / Path Traversal", []],
     ["file_get_contents", "File Inclusion / Path Traversal", []],
+    ["stream_get_contents", "File Inclusion / Path Traversal", []],
     ["show_source", "File Inclusion / Path Traversal", []],
     ["fopen", "File Inclusion / Path Traversal", []],
     ["file", "File Inclusion / Path Traversal", []],
@@ -112,5 +115,9 @@ payloads = [
     # URL Redirection
     ["http_redirect", "URL Redirection", []],
     ["HttpMessage::setResponseCode", "URL Redirection", []],
+
+    # Server Side Template Injection
+    ["->render", "Server Side Template Injection", []],
+    ["->assign", "Server Side Template Injection", []],
 
 ]
