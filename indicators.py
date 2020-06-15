@@ -17,6 +17,7 @@ payloads = [
     ["pcntl_exec", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
     ["assert", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
     ["proc_open", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
+    ["expect_popen", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
     ["create_function", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
     ["call_user_func", "Remote Code Execution", []],
     ["call_user_func_array", "Remote Code Execution", []],
@@ -96,6 +97,13 @@ payloads = [
     ["echo", "Cross Site Scripting", ["htmlentities", "htmlspecialchars"]],
     ["print", "Cross Site Scripting", ["htmlentities", "htmlspecialchars"]],
     ["printf", "Cross Site Scripting", ["htmlentities", "htmlspecialchars"]],
+    ["vprintf", "Cross Site Scripting", ["htmlentities", "htmlspecialchars"]],
+    ["trigger_error", "Cross Site Scripting", ["htmlentities", "htmlspecialchars"]],
+    ["user_error", "Cross Site Scripting", ["htmlentities", "htmlspecialchars"]],
+    ["odbc_result_all", "Cross Site Scripting", ["htmlentities", "htmlspecialchars"]],
+    ["ifx_htmltbl_result", "Cross Site Scripting", ["htmlentities", "htmlspecialchars"]],
+    ["die", "Cross Site Scripting", ["htmlentities", "htmlspecialchars"]],
+    ["exit", "Cross Site Scripting", ["htmlentities", "htmlspecialchars"]],
 
     # XPATH and LDAP
     ["xpath", "XPATH Injection", []],
@@ -119,5 +127,19 @@ payloads = [
     # Server Side Template Injection
     ["->render", "Server Side Template Injection", []],
     ["->assign", "Server Side Template Injection", []],
+
+    # Weak Cryptographic Hash
+    ["md5", "Weak Cryptographic Hash", []],
+
+    # Insecure Weak Random
+    ["mt_rand", "Insecure Weak Random", []],
+    ["srand", "Insecure Weak Random", []],
+    ["uniqid", "Insecure Weak Random", []],
+
+    # Information Leak
+    ["phpinfo", "Information Leak", []],
+    ["show_source", "Information Leak", []],
+    ["highlight_file", "Information Leak", []],
+
 
 ]
