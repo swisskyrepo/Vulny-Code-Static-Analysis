@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # /!\ Detection Format (.*)function($vuln)(.*) matched by payload[0]+regex_indicators
-regex_indicators = '\\((.*?)(\\$_GET\\[.*?\\]|\\$_FILES\\[.*?\\]|\\$_POST\\[.*?\\]|\\$_REQUEST\\[.*?\\]|\\$_COOKIES\\[.*?\\]|\\$_SESSION\\[.*?\\]|\\$(?!this|e-)[a-zA-Z0-9_,]*)(.*?)\\)'
+regex_indicators = '\\((.*?)(\\$_GET\\[.*?\\]|\\$_FILES\\[.*?\\]|\\$_POST\\[.*?\\]|\\$_REQUEST\\[.*?\\]|\\$_COOKIES\\[.*?\\]|\\$_SESSION\\[.*?\\]|\\$(?!this|e-)[a-zA-Z0-9_]*)(.*?)\\)'
 
 # Function_Name:String, Vulnerability_Name:String, Protection_Function:Array
 payloads = [
@@ -10,6 +10,7 @@ payloads = [
     # Remote Command Execution
     ["eval", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
     ["popen", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
+    ["popen_ex", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
     ["system", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
     ["passthru", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
     ["exec", "Remote Command Execution", ["escapeshellarg", "escapeshellcmd"]],
@@ -36,7 +37,7 @@ payloads = [
 
     ["readfile", "File Inclusion / Path Traversal", []],
     ["file_get_contents", "File Inclusion / Path Traversal", []],
-    ["stream_get_contents", "File Inclusion / Path Traversal", []],
+    ["file_put_contents", "File Inclusion / Path Traversal", []],
     ["show_source", "File Inclusion / Path Traversal", []],
     ["fopen", "File Inclusion / Path Traversal", []],
     ["file", "File Inclusion / Path Traversal", []],
@@ -45,6 +46,10 @@ payloads = [
     ["gzfile", "File Inclusion / Path Traversal", []],
     ["gzpassthru", "File Inclusion / Path Traversal", []],
     ["readgzfile", "File Inclusion / Path Traversal", []],
+    
+    ["DirectoryIterator", "File Inclusion / Path Traversal", []],
+    ["stream_get_contents", "File Inclusion / Path Traversal", []],
+    ["copy", "File Inclusion / Path Traversal", []],
 
     # MySQL(i) SQL Injection
     ["mysql_query", "SQL Injection", ["mysql_real_escape_string"]],
@@ -104,6 +109,7 @@ payloads = [
     ["ifx_htmltbl_result", "Cross Site Scripting", ["htmlentities", "htmlspecialchars"]],
     ["die", "Cross Site Scripting", ["htmlentities", "htmlspecialchars"]],
     ["exit", "Cross Site Scripting", ["htmlentities", "htmlspecialchars"]],
+    ["var_dump", "Cross Site Scripting", ["htmlentities", "htmlspecialchars"]],
 
     # XPATH and LDAP
     ["xpath", "XPATH Injection", []],
@@ -130,6 +136,7 @@ payloads = [
 
     # Weak Cryptographic Hash
     ["md5", "Weak Cryptographic Hash", []],
+    ["sha1", "Weak Cryptographic Hash", []],
 
     # Insecure Weak Random
     ["mt_rand", "Insecure Weak Random", []],
@@ -141,5 +148,23 @@ payloads = [
     ["show_source", "Information Leak", []],
     ["highlight_file", "Information Leak", []],
 
+    # Server Side Request Forgery
+    ["curl_setopt", "Server Side Request Forgery", []],
+    ["curl_exec", "Server Side Request Forgery", []],
+    ["fsockopen", "Server Side Request Forgery", []],
 
+
+    # XML External Entity
+    ["SimpleXMLElement", "XML External Entity", []],
+    ["xmlparse", "XML External Entity", []],
+    ["loadXML", "XML External Entity", []],
+    ["simplexml_load_string", "XML External Entity", []],
+
+    # Others
+    ["unlink", "Arbitrary File Deletion", []],
+    ["extract", "Arbitrary Variable Overwrite", []],
+    ["setcookie", "Arbitrary Cookie", []],
+    ["chmod", "Arbitrary File Permission", []],
+    ["mkdir", "Arbitrary Folder Creation", []],
+    
 ]

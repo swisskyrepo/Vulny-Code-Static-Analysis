@@ -70,9 +70,17 @@ def analysis(path, plain):
         # Detection of RCE/SQLI/LFI/RFI/RFU/XSS/...
         for payload in payloads:
             regex = re.compile(payload[0] + regex_indicators)
-            matches = regex.findall(content)
+            matches = regex.findall(content.replace(" ", "(PLACEHOLDER"))
 
             for vuln_content in matches:
+
+                # Handle "require something" vs "require(something)"
+                # Dirty trick to force a parenthesis before the function's argument
+                vuln_content = list(vuln_content)
+                for i in range(len(vuln_content)):
+                    vuln_content[i] = vuln_content[i].replace("(PLACEHOLDER", " ")
+                    vuln_content[i] = vuln_content[i].replace("PLACEHOLDER", "")
+
                 occurence = 0
 
                 # Security hole detected, is it protected ?
