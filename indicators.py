@@ -145,6 +145,7 @@ payloads = [
 
     # Information Leak
     ["phpinfo", "Information Leak", []],
+    ["debug_print_backtrace", "Information Leak", []],
     ["show_source", "Information Leak", []],
     ["highlight_file", "Information Leak", []],
 
