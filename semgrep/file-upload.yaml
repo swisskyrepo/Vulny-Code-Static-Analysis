@@ -1,0 +1,14 @@
+rules:
+  - id: file-upload-use
+    patterns:
+      - pattern: move_uploaded_file(...,...)
+    message: >-
+      Moves an uploaded file to a new location. This can lead to command injection.
+    metadata:
+      references:
+        - https://www.php.net/manual/en/function.move-uploaded-file
+      category: security
+      technology:
+        - php
+    languages: [php]
+    severity: ERROR

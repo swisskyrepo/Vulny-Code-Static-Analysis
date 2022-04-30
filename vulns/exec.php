@@ -15,4 +15,6 @@ $target = $_REQUEST['target'];
 if($target){
     if (stristr(php_uname('s'), 'Windows NT')) { 
     $cmd = shell_exec( 'ping  ' . $target );
+}
+}
 ?>

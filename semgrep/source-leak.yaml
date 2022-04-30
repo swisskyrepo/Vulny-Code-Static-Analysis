@@ -1,0 +1,20 @@
+rules:
+  - id: source-leak
+    patterns:
+      - pattern: $FUNC(...);
+      - pattern-not: $FUNC("...");
+      - pattern-not: $FUNC(__DIR__ . "...");
+      - metavariable-regex:
+          metavariable: $FUNC
+          regex: \b(show_source|highlight_file)\b
+    message: >-
+      Detected non-constant source code display. This can lead to local file inclusion (LFI). LFI could lead to sensitive files being obtained by attackers. Instead, explicitly specify what to include. If that is not a viable solution, validate user input thoroughly.
+    metadata:
+      references:
+        - https://www.php.net/manual/en/function.highlight-file
+        - https://en.wikipedia.org/wiki/File_inclusion_vulnerability#Types_of_Inclusion
+      category: security
+      technology:
+        - php
+    languages: [php]
+    severity: ERROR

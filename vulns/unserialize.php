@@ -16,6 +16,7 @@
 
     if(isset($_GET['viewsource'])) {
         highlight_file('index.php');
+        highlight_file($_GET['viewsource']);
         exit();
     }
 

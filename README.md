@@ -1,6 +1,11 @@
-# VulnyCode - PHP Code Static Analysis [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=VulnyCode%20-%20PHP%20Code%20Static%20Analysis&url=https://github.com/swisskyrepo/Vulny-Code-Static-Analysis)
+# VulnyCode - PHP Code Static Analysis [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=VulnyCode%20-%20PHP%20Code%20Static%20Analysis&url=https://github.com/swisskyrepo/Vulny-Code-Static-Analysis) - Deprecated
 
 ![1.0.0](https://img.shields.io/badge/Version-1.0.0%20Beta-RED) ![Python](https://img.shields.io/badge/Python-3.4+-GREEN) ![Platform](https://img.shields.io/badge/Platforms-Linux%20x64-yellowgreen) 
+
+
+:warning: **Deprecated**, you should use semgrep rules instead of this script: `semgrep --config=./semgrep/ vulns/*.php`
+Most of the semgrep rules provided in this repository are from https://github.com/returntocorp/semgrep-rules
+
 
 Basic script to detect vulnerabilities into a PHP source code, it is using Regular Expression to find sinkholes.
 
@@ -17,16 +22,16 @@ optional arguments:
 
 # Example
 ╭─ 👻 swissky@crashlab: ~/Github/PHP_Code_Static_Analysis  ‹master*›
-╰─$ python3 index.py --dir test    
+╰─$ python3 index.py --dir vulns    
 ------------------------------------------------------------
-Analyzing 'test' source code
+Analyzing 'vulns' source code
 ------------------------------------------------------------
 Potential vulnerability found : File Inclusion
-Line 19 in test/include.php
+Line 19 in vulns/include.php
 Code : include($_GET['patisserie'])
 ------------------------------------------------------------
 Potential vulnerability found : Insecure E-mail
-Line 2 in test/mail.php
+Line 2 in vulns/mail.php
 Code : mail($dest, "subject", "message", "", "-f" . $_GET['from'])
 Declared at line 1 : $dest = $_GET['who'];
 ```
