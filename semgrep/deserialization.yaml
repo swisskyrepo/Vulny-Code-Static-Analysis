@@ -6,6 +6,10 @@ rules:
     - pattern: $_GET[...]
     - pattern: $_FILES[...]
     - pattern: $_POST[...]
+    - pattern: $_FILE[...]
+    - pattern: $params[...]  # Captures user-controlled `$params`
+    - pattern: $request->getParam(...)  # Captures user-controlled request parameters
+    - pattern: $request->input(...)  # Alternative for Laravel-style requests
   pattern-sinks:
   - pattern: extract(...)
   pattern-sanitizers:

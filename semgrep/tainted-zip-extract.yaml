@@ -1,0 +1,37 @@
+rules:
+- id: tainted-zip-extract
+  severity: WARNING
+  message: >-
+    ZIP archive extracting to user controlled directory
+  metadata:
+    technology:
+    - php
+    category: security
+    cwe:
+    - "CWE-23: Relative Path Traversal"
+    references:
+    - https://www.php.net/manual/en/ziparchive.extractto.php
+    subcategory:
+    - vuln
+    impact: HIGH
+    likelihood: MEDIUM
+    confidence: MEDIUM
+  languages: [php]
+  mode: taint
+  pattern-sources:
+  - patterns:
+    - pattern-either:
+      - pattern: $_GET
+      - pattern: $_POST
+      - pattern: $_COOKIE
+      - pattern: $_REQUEST
+      - pattern: $_FILE[...]
+      - pattern: file_get_contents('php://input')
+      - pattern: $params[...]  # Captures user-controlled `$params`
+      - pattern: $request->getParam(...)  # Captures user-controlled request parameters
+      - pattern: $request->input(...)  # Alternative for Laravel-style requests
+  pattern-sinks:
+  - patterns:
+    - pattern: $VAR
+    - pattern-either:
+      - pattern-inside: $ZIPARCHIVE->extractTo($VAR)

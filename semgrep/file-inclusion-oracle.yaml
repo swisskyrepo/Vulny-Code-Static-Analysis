@@ -1,18 +1,15 @@
 rules:
-- id: file-inclusion
+- id: file-inclusion-oracle
   message: >-
-    Detected non-constant file inclusion. This can lead to local file inclusion (LFI) or remote file inclusion
-    (RFI) if user input reaches this statement. LFI and RFI could lead to sensitive files being obtained
-    by attackers. Instead, explicitly specify what to include. If that is not a viable solution, validate
-    user input thoroughly.
+    Detected error based oracle file inclusion.
   metadata:
     cwe:
     - "CWE-98: Improper Control of Filename for Include/Require Statement in PHP Program ('PHP Remote\
       \ File Inclusion')"
     references:
-    - https://www.php.net/manual/en/function.include.php
-    - https://github.com/FloeDesignTechnologies/phpcs-security-audit/blob/master/Security/Sniffs/BadFunctions/EasyRFISniff.php
-    - https://en.wikipedia.org/wiki/File_inclusion_vulnerability#Types_of_Inclusion
+    - https://www.ambionics.io/blog/lightyear-file-dump
+    - https://www.synacktiv.com/en/publications/php-filter-chains-file-read-from-error-based-oracle
+    - https://github.com/DownUnderCTF/Challenges_2022_Public/blob/main/web/minimal-php/solve/solution.py
     category: security
     technology:
     - php
@@ -46,10 +43,12 @@ rules:
       - pattern-inside: readlink($PATH, ...)
       - pattern-inside: realpath($PATH, ...)
       - pattern-inside: include_safe(...)
+      - pattern-inside: file_exists(...)
+      - pattern-inside: is_file(...)
   pattern-sinks:
   - patterns:
     - pattern-inside: $FUNC(...);
     - pattern: $VAR
     - metavariable-regex:
         metavariable: $FUNC
-        regex: \b(include|include_once|require|require_once)\b
+        regex: \b(file_get_contents|readfile|getimagesize|md5_file|sha1_file|hash_file|file|parse_ini_file|copy|stream_get_contents)\b

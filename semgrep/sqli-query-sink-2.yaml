@@ -1,0 +1,16 @@
+rules:
+  - id: sql-query-sink-2
+    patterns:
+      - pattern-either:
+        - pattern-regex: '\$sqlReq\s*\.=\s*.*\$[a-zA-Z0-9_].*;'
+        - pattern-regex: '\$sql\s*\.=\s*.*\$[a-zA-Z0-9_].*;'
+    message: >-
+      SQL query concatenating a PHP variable
+    metadata:
+      references:
+        - https://owasp.org/www-community/attacks/SQL_Injection
+      category: security
+      technology:
+        - php
+    languages: [php]
+    severity: WARNING

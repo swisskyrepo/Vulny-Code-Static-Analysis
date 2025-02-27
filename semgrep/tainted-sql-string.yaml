@@ -33,6 +33,7 @@ rules:
       - pattern: $_POST
       - pattern: $_COOKIE
       - pattern: $_REQUEST
+      - pattern: $_FILE[...]
   pattern-sinks:
   - pattern-either:
     - patterns:

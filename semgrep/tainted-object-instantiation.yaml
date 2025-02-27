@@ -21,6 +21,7 @@ rules:
               - pattern: $_COOKIE
               - pattern: $_REQUEST
               - pattern: $_SERVER
+              - pattern: $_FILE[...]
     pattern-sinks:
       - patterns:
         - pattern-either:

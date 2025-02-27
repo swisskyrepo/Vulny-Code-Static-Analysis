@@ -1,0 +1,14 @@
+rules:
+  - id: extract-use
+    patterns:
+      - pattern: extract(...);
+    message: >-
+      Import variables into the current symbol table from an array
+    metadata:
+      references:
+        - https://www.php.net/manual/en/function.extract.php
+      category: security
+      technology:
+        - php
+    languages: [php]
+    severity: WARNING
